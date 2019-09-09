@@ -1,0 +1,33 @@
+From 470ac6d969a93f55e422b48b82f603233c946b1e Mon Sep 17 00:00:00 2001
+From: asaox <asao@core-solution.com>
+Date: Mon, 7 Jan 2019 16:29:00 +0900
+Subject: [PATCH] Add PQclear().
+
+---
+ pg_keeper.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/pg_keeper.c b/pg_keeper.c
+index 9f47f28..e7a7bbd 100644
+--- a/pg_keeper.c
++++ b/pg_keeper.c
+@@ -327,11 +327,15 @@ execSQL(const char *conninfo, const char *sql)
+ 		ereport(LOG,
+ 				(errmsg("could not get tuple from server : \"%s\"",
+ 					conninfo)));
+-
++		
++                PQclear(res); /* add */
++		
+ 		PQfinish(con);
+ 		return false;
+ 	}
+ 
++	PQclear(res); /* add */	
++
+ 	/* Primary server is alive now */
+ 	PQfinish(con);
+ 	return true;
+-- 
+2.17.1
+
